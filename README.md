@@ -1,28 +1,43 @@
 # Closed-Loop Balance Control Simulation in Python
 
-An educational computational project linking simplified postural mechanics, sensory feedback and corrective control.
+An educational computational model linking simplified postural mechanics, delayed sensory feedback and corrective control.
+
+## Scientific question
+How do feedback gains and sensory delay influence the response of a simplified upright-body model to a brief perturbation?
 
 ## Model
-The body is represented as a linearized single-link inverted pendulum about the ankle. A proportional-derivative (PD) controller uses delayed, noisy estimates of body angle and angular velocity to generate corrective torque following an external perturbation.
+The body is represented as a linearized single-link inverted pendulum about the ankle:
 
-## What this project demonstrates
-- numerical simulation of a dynamical system;
-- feedback-control logic;
-- sensory delay/noise as explicit model parameters;
-- perturbation-response analysis;
-- parameter sweeps and stability reasoning;
-- reproducible Python code.
+`I θ¨ = mgh θ + τ_control + τ_external`
 
-## Scope
-This is not a validated model of human postural control, a vestibular model, a motor-unit model, or a physical robotics controller. It is a learning bridge toward closed-loop and human-in-the-loop reasoning.
+A proportional-derivative controller generates corrective torque from delayed, noisy estimates of body angle and angular velocity:
 
-## Portfolio progression
-1. EMG signal analysis — physiological signal processing.
-2. Postural sway analysis — quantitative whole-body balance analysis.
-3. Closed-loop balance control — computational modelling and feedback-control concepts.
+`τ_control = -Kp θ_est - Kd ω_est`
 
-## Learning goals
-Complete parameter sweeps and explain why upright stance is mechanically unstable in this model, what proportional and derivative feedback contribute, why delay can destabilize feedback, and why increasing gain is not automatically better.
+## Reproduce
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python analysis.py
+pytest -q
+```
 
-## Research integrity
-This repository documents introductory computational modelling. It does not claim robotics-hardware experience or experimental validation.
+The analysis saves baseline response metrics and a sensory-delay sweep.
+
+## Repository structure
+- `src/balance_model.py` — simulation and response metrics.
+- `analysis.py` — baseline and delay experiments.
+- `data/baseline_metrics.csv` — baseline summary.
+- `tests/` — reproducibility and numerical checks.
+- `LEARNING_GUIDE.md` — concepts and parameter exercises.
+- `.github/workflows/` — automated Python checks.
+
+## Skills demonstrated
+Python, NumPy, pandas, numerical simulation, feedback-control concepts, parameter sweeps, reproducibility and basic testing.
+
+## Interpretation and limitations
+This is a deliberately simplified educational model. It is not a validated human postural-control model, vestibular model, motor-unit model, neural decoder, ROS2 controller or robotics-hardware implementation. Its purpose is to build transparent foundations for reasoning about feedback, delay, perturbations and stability.
+
+## Development goals
+Complete Kp/Kd sensitivity maps, identify stable/unstable parameter regions and document how physiological measurements could inform a richer model.

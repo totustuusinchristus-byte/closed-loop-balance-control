@@ -37,5 +37,5 @@ def response_metrics(df, perturbation_time=2.0):
     return {
         "peak_abs_angle_deg": float(post["angle_deg"].abs().max()),
         "post_perturbation_rms_angle_deg": float(np.sqrt(np.mean(post["angle_deg"]**2))),
-        "integrated_squared_control_effort": float(np.trapz(post["control_torque_Nm"]**2, post["time_s"]))
+        "integrated_squared_control_effort": float(np.trapezoid(post["control_torque_Nm"]**2, post["time_s"]))
     }
